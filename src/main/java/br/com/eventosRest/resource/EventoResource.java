@@ -27,12 +27,12 @@ public class EventoResource {
 	}
 	
 	@PostMapping
-	public Evento cadastrarEvento(@RequestBody @Valid Evento evento) {
+	public Evento cadastraEvento(@RequestBody @Valid Evento evento) {
 		return dao.save(evento);
 	}
 	
 	@DeleteMapping
-	public Evento excluirEvento (@RequestBody Evento evento) {
+	public Evento excluiEvento (@RequestBody Evento evento) {
 		dao.delete(evento);
 		return evento;
 	}
