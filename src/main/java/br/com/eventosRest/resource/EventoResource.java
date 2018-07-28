@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(value = "API REST Eventos")
 @RestController
-@RequestMapping("/eventoRest")
+@RequestMapping("/eventosRest")
 public class EventoResource {
 	
 	@Autowired
@@ -34,7 +34,7 @@ public class EventoResource {
 		return eventos;
 	}
 	
-	@ApiOperation(value = "Salva um eventos")
+	@ApiOperation(value = "Salva um evento")
 	@PostMapping
 	public Evento cadastraEvento(@RequestBody @Valid Evento evento) {
 		return dao.save(evento);

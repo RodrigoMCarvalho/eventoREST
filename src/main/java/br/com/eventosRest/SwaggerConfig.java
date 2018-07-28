@@ -33,7 +33,6 @@ public class SwaggerConfig {
 
     private ApiInfo metaInfo() {
 
-        @SuppressWarnings("rawtypes")
 		ApiInfo apiInfo = new ApiInfo(
                 "Eventos API REST",
                 "API REST de cadastro de eventos",
