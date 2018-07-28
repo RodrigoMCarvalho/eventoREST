@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.eventosRest.dao.EventoDAO;
 import br.com.eventosRest.model.Evento;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value = "API REST Eventos")
 @RestController
 @RequestMapping("/eventoRest")
 public class EventoResource {
@@ -24,17 +27,20 @@ public class EventoResource {
 	@Autowired
 	private EventoDAO dao;
 	
+	@ApiOperation(value = "Retorna uma lista de eventos")
 	@GetMapping(produces="application/json")
 	public Iterable<Evento> listEventos() {
 		Iterable<Evento> eventos = dao.findAll();
 		return eventos;
 	}
 	
+	@ApiOperation(value = "Salva um eventos")
 	@PostMapping
 	public Evento cadastraEvento(@RequestBody @Valid Evento evento) {
 		return dao.save(evento);
 	}
 	
+	@ApiOperation(value = "Busca um evento por código")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Evento> buscaPorCodigo(@PathVariable("codigo") Long codigo){
 		Evento evento = dao.getOne(codigo);
@@ -44,6 +50,7 @@ public class EventoResource {
 		return ResponseEntity.ok(evento);
 	}
 	
+	@ApiOperation(value = "Atualiza um evento por código")
 	@PutMapping("/{codigo}")
 	public ResponseEntity<Evento> atualizaEvento(@PathVariable("codigo") Long codigo, 
 			@RequestBody @Valid Evento evento){
@@ -55,12 +62,14 @@ public class EventoResource {
 		return ResponseEntity.ok(dao.save(eventoAtualiza));			// e ignora o "codigo"
 	}
 	
+	@ApiOperation(value = "Remove um evento")
 	@DeleteMapping
 	public Evento excluiEvento (@RequestBody Evento evento) {
 		dao.delete(evento);
 		return evento;
 	}
 	
+	@ApiOperation(value = "Remove um evento por código")
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<Void> excluiEventoPorCodigo(@PathVariable("codigo") Long codigo) {
 		Evento evento = dao.getOne(codigo);
