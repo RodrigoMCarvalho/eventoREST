@@ -1,5 +1,8 @@
 package br.com.eventosRest.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 import br.com.eventosRest.dao.EventoDAO;
 import br.com.eventosRest.model.Evento;
@@ -31,7 +36,23 @@ public class EventoResource {
 	@GetMapping(produces="application/json")
 	public Iterable<Evento> listEventos() {
 		Iterable<Evento> eventos = dao.findAll();
-		return eventos;
+		List<Evento> listEventos = new ArrayList<>();
+		
+		for(Evento evento: eventos) {
+			long codigo = evento.getCodigo();
+			evento.add(linkTo(methodOn(EventoResource.class).evento(codigo)).withSelfRel()); //cria um link para cada um dos eventos	
+			listEventos.add(evento);
+		}
+		
+		return listEventos;
+	}
+	
+	@ApiOperation(value = "Retorna um evento específico")
+	@GetMapping("/evento/{codigo}" )
+	public Evento evento(@PathVariable("codigo") Long codigo) {
+		Evento evento = dao.findByCodigo(codigo);
+		evento.add(linkTo(methodOn(EventoResource.class).listEventos()).withRel("Lista de Eventos")); //cria um link para a lista de eventos
+		return evento;
 	}
 	
 	@ApiOperation(value = "Salva um evento")

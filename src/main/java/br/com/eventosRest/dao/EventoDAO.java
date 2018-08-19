@@ -11,5 +11,6 @@ import br.com.eventosRest.model.Evento;
 public interface EventoDAO extends JpaRepository<Evento, Long>{
 
 	Optional<Evento> save(Optional<Evento> eventoAtualiza);
-
+	
+	Evento findByCodigo(Long codigo);
 }
